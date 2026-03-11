@@ -26,17 +26,46 @@ export default function OrderProgress({ members, orders }) {
   // Count people who have completed their order (only direct order owners can complete)
   const completed = members.filter((m) => orders[m.name]?.completed).length;
   
-  // Find people who haven't ordered (neither direct nor plus 1)
+  // Count people who are ready (either completed or marked as ready)
+  const readyPeople = new Set();
+  
+  // Add people who have completed
+  members.forEach(m => {
+    if (orders[m.name]?.completed) {
+      readyPeople.add(m.name);
+    }
+  });
+  
+  // Add people who have marked themselves as ready (even without items)
+  members.forEach(m => {
+    if (orders[m.name]?.ready && !orders[m.name]?.completed) {
+      readyPeople.add(m.name);
+    }
+  });
+  
+  // Add plus 1 users who are ready (they inherit the owner's ready status)
+  Object.values(orders).forEach(order => {
+    if (order.plusOnes && (order.completed || order.ready)) {
+      order.plusOnes.forEach(plusOneUser => {
+        readyPeople.add(plusOneUser);
+      });
+    }
+  });
+  
+  const ready = readyPeople.size;
+  
+  // Find people who haven't ordered and aren't ready (neither direct nor plus 1)
   const notOrdered = members.filter((m) => {
     const hasDirectOrder = orders[m.name]?.items?.trim();
     const isPlusOneUser = Object.values(orders).some(order => 
       order.plusOnes && order.plusOnes.includes(m.name)
     );
-    return !hasDirectOrder && !isPlusOneUser;
+    const isReady = orders[m.name]?.ready || orders[m.name]?.completed;
+    return !hasDirectOrder && !isPlusOneUser && !isReady;
   });
   
-  const pct = total === 0 ? 0 : Math.round((ordered / total) * 100);
-  const allDone = ordered === total && total > 0;
+  const pct = total === 0 ? 0 : Math.round((ready / total) * 100);
+  const allDone = ready === total && total > 0;
 
   return (
     <div className="progress-bar-wrap">
@@ -44,10 +73,10 @@ export default function OrderProgress({ members, orders }) {
         <div className="progress-label-left">
           <strong>{ordered}</strong> of <strong>{total}</strong>{" "}
           {total === 1 ? "person has" : "people have"} ordered
-          {completed > 0 && ` (${completed} set)`}
+          {ready > 0 && ` (${ready} ready)`}
         </div>
         <div className="progress-fraction">
-          <span className="frac-done">{ordered}</span>/{total}
+          <span className="frac-done">{ready}</span>/{total}
         </div>
       </div>
 

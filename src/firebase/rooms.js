@@ -123,6 +123,13 @@ export async function setOrderComplete(code, name, completed) {
   });
 }
 
+// ── Order ready operations ────────────────────────────────────────────────────
+export async function setOrderReady(code, name, ready) {
+  await updateDoc(roomRef(code), {
+    [`orders.${name}.ready`]: ready,
+  });
+}
+
 // ── Real-time listener ────────────────────────────────────────────────────────
 // Returns an unsubscribe function. Calls onUpdate(data) on every change,
 // and onDeleted() if the document is removed.

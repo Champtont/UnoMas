@@ -396,6 +396,26 @@ body {
 }
 .complete-btn:disabled { opacity: 0.5; cursor: not-allowed; }
 
+.ready-btn {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  color: var(--muted);
+  cursor: pointer;
+  font-size: 14px;
+  font-weight: 600;
+  padding: 4px 10px;
+  transition: all 0.15s;
+}
+.ready-btn:hover { border-color: var(--accent); color: var(--accent); }
+.ready-btn.active {
+  background: rgba(255, 92, 58, 0.15);
+  border-color: var(--accent);
+  color: var(--accent);
+  box-shadow: 0 0 0 2px rgba(255, 92, 58, 0.2) inset;
+}
+.ready-btn:disabled { opacity: 0.5; cursor: not-allowed; }
+
 .order-actions {
   display: flex;
   gap: 6px;

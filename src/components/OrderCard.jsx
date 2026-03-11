@@ -12,7 +12,9 @@ export default function OrderCard({
   onRemovePlusOne, 
   myName,
   onSetComplete,
-  hasCompleted = false
+  onSetReady,
+  hasCompleted = false,
+  hasReady = false
 }) {
   const [editing, setEditing] = useState(false);
   const [draft, setDraft] = useState(items);
@@ -60,6 +62,9 @@ export default function OrderCard({
   
   // Show completion button for own order only
   const showCompleteButton = isMe && !isCompleted && items.trim() && onSetComplete;
+  
+  // Show "Set" button for users without items who aren't completed
+  const showReadyButton = isMe && !isCompleted && !items.trim() && onSetReady;
 
   const handlePlusOne = () => {
     if (hasPlusOne) {
@@ -71,6 +76,10 @@ export default function OrderCard({
 
   const handleSetComplete = () => {
     onSetComplete(!hasCompleted);
+  };
+
+  const handleSetReady = () => {
+    onSetReady(!hasReady);
   };
 
   // Format plus 1 names for display
@@ -96,6 +105,14 @@ export default function OrderCard({
               onClick={handleSetComplete}
             >
               {hasCompleted ? "✓ Set" : "Set Order"}
+            </button>
+          )}
+          {showReadyButton && (
+            <button
+              className={`ready-btn${hasReady ? " active" : ""}`}
+              onClick={handleSetReady}
+            >
+              {hasReady ? "✓ Set" : "Set"}
             </button>
           )}
           {isMe && plusOnes.length > 0 && (

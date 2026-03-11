@@ -16,6 +16,7 @@ import {
   addPlusOne,
   removePlusOne,
   setOrderComplete,
+  setOrderReady,
 } from "../firebase/rooms";
 
 export function useRoom(code, myName) {
@@ -94,6 +95,11 @@ export function useRoom(code, myName) {
     [code, myName]
   );
 
+  const setMyOrderReady = useCallback(
+    (ready) => setOrderReady(code, myName, ready),
+    [code, myName]
+  );
+
   return {
     room,
     loading,
@@ -110,5 +116,6 @@ export function useRoom(code, myName) {
     addPlusOneToOrder,
     removePlusOneFromOrder,
     setMyOrderComplete,
+    setMyOrderReady,
   };
 }
