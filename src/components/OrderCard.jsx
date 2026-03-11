@@ -96,6 +96,11 @@ export default function OrderCard({
               {hasCompleted ? "✓ Set" : "Set Order"}
             </button>
           )}
+          {isMe && plusOnes.length > 0 && (
+            <div className="plus-one-count">
+              +{plusOnes.length} ({plusOnes.length + 1} total)
+            </div>
+          )}
           {isMe && !isCompleted && (
             <button
               className="order-edit-btn"

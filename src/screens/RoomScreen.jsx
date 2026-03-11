@@ -154,6 +154,8 @@ export default function RoomScreen({ code, myName, onLeave }) {
           onSave={handleSaveOrder}
           onSetComplete={setMyOrderComplete}
           hasCompleted={orders[myName]?.completed || false}
+          plusOnes={orders[myName]?.plusOnes || []}
+          myName={myName}
         />
 
         {otherMembers.length > 0 && (
