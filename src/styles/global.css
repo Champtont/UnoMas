@@ -411,6 +411,50 @@ body {
   font-weight: 600;
   padding: 4px 8px;
   box-shadow: 0 0 0 2px rgba(255, 179, 71, 0.2) inset;
+  cursor: pointer;
+  position: relative;
+  transition: background 0.2s;
+}
+.plus-one-count:hover {
+  background: rgba(255, 179, 71, 0.25);
+}
+
+.plus-one-tooltip {
+  position: absolute;
+  top: 100%;
+  left: 50%;
+  transform: translateX(-50%);
+  margin-top: 6px;
+  background: var(--card);
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  color: var(--text);
+  font-size: 12px;
+  padding: 8px 12px;
+  white-space: nowrap;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+  z-index: 100;
+  animation: slideUp 0.2s ease-out;
+}
+.plus-one-tooltip::before {
+  content: '';
+  position: absolute;
+  top: -6px;
+  left: 50%;
+  transform: translateX(-50%);
+  border-left: 6px solid transparent;
+  border-right: 6px solid transparent;
+  border-bottom: 6px solid var(--border);
+}
+.plus-one-tooltip::after {
+  content: '';
+  position: absolute;
+  top: -5px;
+  left: 50%;
+  transform: translateX(-50%);
+  border-left: 6px solid transparent;
+  border-right: 6px solid transparent;
+  border-bottom: 6px solid var(--card);
 }
 
 /* ── Inline edit ─────────────────────────────────────────────────────────── */
