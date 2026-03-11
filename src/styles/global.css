@@ -457,6 +457,58 @@ body {
   border-bottom: 6px solid var(--card);
 }
 
+.info-btn {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  color: var(--muted);
+  cursor: pointer;
+  font-size: 14px;
+  padding: 4px 10px;
+  transition: all 0.15s;
+  position: relative;
+}
+.info-btn:hover { border-color: var(--accent); color: var(--accent); }
+.info-btn:disabled { opacity: 0.5; cursor: not-allowed; }
+
+.info-tooltip {
+  position: absolute;
+  top: 100%;
+  left: 50%;
+  transform: translateX(-50%);
+  margin-top: 6px;
+  background: var(--card);
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  color: var(--text);
+  font-size: 12px;
+  padding: 8px 12px;
+  white-space: nowrap;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+  z-index: 100;
+  animation: slideUp 0.2s ease-out;
+}
+.info-tooltip::before {
+  content: '';
+  position: absolute;
+  top: -6px;
+  left: 50%;
+  transform: translateX(-50%);
+  border-left: 6px solid transparent;
+  border-right: 6px solid transparent;
+  border-bottom: 6px solid var(--border);
+}
+.info-tooltip::after {
+  content: '';
+  position: absolute;
+  top: -5px;
+  left: 50%;
+  transform: translateX(-50%);
+  border-left: 6px solid transparent;
+  border-right: 6px solid transparent;
+  border-bottom: 6px solid var(--card);
+}
+
 /* ── Inline edit ─────────────────────────────────────────────────────────── */
 .inline-edit { display: flex; flex-direction: column; gap: 8px; margin-top: 8px; }
 

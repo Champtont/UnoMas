@@ -18,6 +18,7 @@ export default function OrderCard({
   const [draft, setDraft] = useState(items);
   const [saving, setSaving] = useState(false);
   const [showPlusOneTooltip, setShowPlusOneTooltip] = useState(false);
+  const [showInfoTooltip, setShowInfoTooltip] = useState(false);
   const taRef = useRef(null);
 
   // Auto-focus and auto-size textarea when editing opens
@@ -120,6 +121,20 @@ export default function OrderCard({
               }}
             >
               {editing ? "✕" : "Edit"}
+            </button>
+          )}
+          {!isMe && items.trim() && (
+            <button
+              className="info-btn"
+              onClick={() => setShowInfoTooltip(!showInfoTooltip)}
+              onMouseLeave={() => setShowInfoTooltip(false)}
+            >
+              ℹ️
+              {showInfoTooltip && (
+                <div className="info-tooltip">
+                  {person} (owner){plusOnes.length > 0 ? `, ${plusOnes.join(", ")}` : ""}
+                </div>
+              )}
             </button>
           )}
           {showPlusOneButton && (
