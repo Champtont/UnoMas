@@ -113,7 +113,7 @@ export default function OrderCard({
               onClick={handlePlusOne}
               disabled={saving}
             >
-              {hasPlusOne ? "✓" : "+"} {plusOnes.length > 0 && `(${plusOnes.length})`}
+              {hasPlusOne ? "✓" : "+"} {plusOnes.length > 0 && `(${plusOnes.length + 1})`}
             </button>
           )}
         </div>
