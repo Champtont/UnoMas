@@ -12,6 +12,7 @@ import {
   deleteDoc,
   onSnapshot,
   arrayUnion,
+  arrayRemove,
   serverTimestamp,
 } from "firebase/firestore";
 import { db } from "./config";
@@ -100,6 +101,19 @@ export async function callForHelp(code, name) {
 // ── Delete room ───────────────────────────────────────────────────────────────
 export async function deleteRoom(code) {
   await deleteDoc(roomRef(code));
+}
+
+// ── Plus 1 operations ─────────────────────────────────────────────────────────
+export async function addPlusOne(code, name, targetName) {
+  await updateDoc(roomRef(code), {
+    [`orders.${targetName}.plusOnes`]: arrayUnion(name),
+  });
+}
+
+export async function removePlusOne(code, name, targetName) {
+  await updateDoc(roomRef(code), {
+    [`orders.${targetName}.plusOnes`]: arrayRemove(name),
+  });
 }
 
 // ── Real-time listener ────────────────────────────────────────────────────────

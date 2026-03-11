@@ -1,7 +1,17 @@
 // src/components/OrderCard.jsx
 import { useState, useEffect, useRef } from "react";
 
-export default function OrderCard({ person, items, isMe, isCompleted, onSave }) {
+export default function OrderCard({ 
+  person, 
+  items, 
+  isMe, 
+  isCompleted, 
+  onSave, 
+  plusOnes = [], 
+  onAddPlusOne, 
+  onRemovePlusOne, 
+  myName 
+}) {
   const [editing, setEditing] = useState(false);
   const [draft, setDraft] = useState(items);
   const [saving, setSaving] = useState(false);
@@ -33,6 +43,20 @@ export default function OrderCard({ person, items, isMe, isCompleted, onSave }) 
     setEditing(false);
   };
 
+  // Check if current user has added plus 1 to this order
+  const hasPlusOne = plusOnes.includes(myName);
+  
+  // Don't show plus 1 button for own orders or completed orders
+  const showPlusOneButton = !isMe && !isCompleted && onAddPlusOne && onRemovePlusOne;
+
+  const handlePlusOne = () => {
+    if (hasPlusOne) {
+      onRemovePlusOne();
+    } else {
+      onAddPlusOne();
+    }
+  };
+
   return (
     <div className={`order-card${isMe ? " mine" : ""}`}>
       <div className="order-card-top">
@@ -49,6 +73,15 @@ export default function OrderCard({ person, items, isMe, isCompleted, onSave }) 
             }}
           >
             {editing ? "✕" : "Edit"}
+          </button>
+        )}
+        {showPlusOneButton && (
+          <button
+            className={`plus-one-btn${hasPlusOne ? " active" : ""}`}
+            onClick={handlePlusOne}
+            disabled={saving}
+          >
+            {hasPlusOne ? "✓" : "+"} {plusOnes.length > 0 && `(${plusOnes.length})`}
           </button>
         )}
       </div>

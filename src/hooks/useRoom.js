@@ -13,6 +13,8 @@ import {
   reopenRoom,
   callForHelp,
   deleteRoom,
+  addPlusOne,
+  removePlusOne,
 } from "../firebase/rooms";
 
 export function useRoom(code, myName) {
@@ -76,6 +78,16 @@ export function useRoom(code, myName) {
 
   const dismissHelp = useCallback(() => setHelpNotif(null), []);
 
+  const addPlusOneToOrder = useCallback(
+    (targetName) => addPlusOne(code, myName, targetName),
+    [code, myName]
+  );
+
+  const removePlusOneFromOrder = useCallback(
+    (targetName) => removePlusOne(code, myName, targetName),
+    [code, myName]
+  );
+
   return {
     room,
     loading,
@@ -89,5 +101,7 @@ export function useRoom(code, myName) {
     sendHelp,
     remove,
     dismissHelp,
+    addPlusOneToOrder,
+    removePlusOneFromOrder,
   };
 }
