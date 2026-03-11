@@ -10,7 +10,9 @@ export default function OrderCard({
   plusOnes = [], 
   onAddPlusOne, 
   onRemovePlusOne, 
-  myName 
+  myName,
+  onSetComplete,
+  hasCompleted = false
 }) {
   const [editing, setEditing] = useState(false);
   const [draft, setDraft] = useState(items);
@@ -36,6 +38,11 @@ export default function OrderCard({
     await onSave(draft.trim());
     setSaving(false);
     setEditing(false);
+    
+    // If user was completed and they edited their order, unset completion
+    if (isMe && hasCompleted && onSetComplete) {
+      onSetComplete(false);
+    }
   };
 
   const handleCancel = () => {
@@ -46,8 +53,11 @@ export default function OrderCard({
   // Check if current user has added plus 1 to this order
   const hasPlusOne = plusOnes.includes(myName);
   
-  // Don't show plus 1 button for own orders or completed orders
-  const showPlusOneButton = !isMe && !isCompleted && onAddPlusOne && onRemovePlusOne;
+  // Don't show plus 1 button for own orders, completed orders, or empty orders
+  const showPlusOneButton = !isMe && !isCompleted && onAddPlusOne && onRemovePlusOne && items.trim();
+  
+  // Show completion button for own order only
+  const showCompleteButton = isMe && !isCompleted && items.trim() && onSetComplete;
 
   const handlePlusOne = () => {
     if (hasPlusOne) {
@@ -57,33 +67,56 @@ export default function OrderCard({
     }
   };
 
+  const handleSetComplete = () => {
+    onSetComplete(!hasCompleted);
+  };
+
+  // Format plus 1 names for display
+  const formatPlusOnes = () => {
+    if (plusOnes.length === 0) return "";
+    if (plusOnes.length === 1) return ` + ${plusOnes[0]}`;
+    if (plusOnes.length === 2) return ` + ${plusOnes.join(" & ")}`;
+    return ` + ${plusOnes.slice(0, 2).join(", ")} & ${plusOnes.length - 2} more`;
+  };
+
   return (
     <div className={`order-card${isMe ? " mine" : ""}`}>
       <div className="order-card-top">
         <span className={`order-person${isMe ? " me" : ""}`}>
           {person}
           {isMe ? " (you)" : ""}
+          {formatPlusOnes()}
         </span>
-        {isMe && !isCompleted && (
-          <button
-            className="order-edit-btn"
-            onClick={() => {
-              setDraft(items);
-              setEditing((e) => !e);
-            }}
-          >
-            {editing ? "✕" : "Edit"}
-          </button>
-        )}
-        {showPlusOneButton && (
-          <button
-            className={`plus-one-btn${hasPlusOne ? " active" : ""}`}
-            onClick={handlePlusOne}
-            disabled={saving}
-          >
-            {hasPlusOne ? "✓" : "+"} {plusOnes.length > 0 && `(${plusOnes.length})`}
-          </button>
-        )}
+        <div className="order-actions">
+          {showCompleteButton && (
+            <button
+              className={`complete-btn${hasCompleted ? " active" : ""}`}
+              onClick={handleSetComplete}
+            >
+              {hasCompleted ? "✓ Set" : "Set Order"}
+            </button>
+          )}
+          {isMe && !isCompleted && (
+            <button
+              className="order-edit-btn"
+              onClick={() => {
+                setDraft(items);
+                setEditing((e) => !e);
+              }}
+            >
+              {editing ? "✕" : "Edit"}
+            </button>
+          )}
+          {showPlusOneButton && (
+            <button
+              className={`plus-one-btn${hasPlusOne ? " active" : ""}`}
+              onClick={handlePlusOne}
+              disabled={saving}
+            >
+              {hasPlusOne ? "✓" : "+"} {plusOnes.length > 0 && `(${plusOnes.length})`}
+            </button>
+          )}
+        </div>
       </div>
 
       {!editing ? (

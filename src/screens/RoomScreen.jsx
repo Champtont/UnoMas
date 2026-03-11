@@ -25,6 +25,7 @@ export default function RoomScreen({ code, myName, onLeave }) {
     dismissHelp,
     addPlusOneToOrder,
     removePlusOneFromOrder,
+    setMyOrderComplete,
   } = useRoom(code, myName);
 
   const { toastMessage, showToast } = useToast();
@@ -151,6 +152,8 @@ export default function RoomScreen({ code, myName, onLeave }) {
           isMe={true}
           isCompleted={room.completed}
           onSave={handleSaveOrder}
+          onSetComplete={setMyOrderComplete}
+          hasCompleted={orders[myName]?.completed || false}
         />
 
         {otherMembers.length > 0 && (

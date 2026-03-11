@@ -116,6 +116,13 @@ export async function removePlusOne(code, name, targetName) {
   });
 }
 
+// ── Order completion operations ───────────────────────────────────────────────
+export async function setOrderComplete(code, name, completed) {
+  await updateDoc(roomRef(code), {
+    [`orders.${name}.completed`]: completed,
+  });
+}
+
 // ── Real-time listener ────────────────────────────────────────────────────────
 // Returns an unsubscribe function. Calls onUpdate(data) on every change,
 // and onDeleted() if the document is removed.

@@ -376,6 +376,32 @@ body {
 }
 .plus-one-btn:disabled { opacity: 0.5; cursor: not-allowed; }
 
+.complete-btn {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  color: var(--muted);
+  cursor: pointer;
+  font-size: 14px;
+  font-weight: 600;
+  padding: 4px 10px;
+  transition: all 0.15s;
+}
+.complete-btn:hover { border-color: var(--green); color: var(--green); }
+.complete-btn.active {
+  background: rgba(74, 222, 128, 0.15);
+  border-color: var(--green);
+  color: var(--green);
+  box-shadow: 0 0 0 2px rgba(74, 222, 128, 0.2) inset;
+}
+.complete-btn:disabled { opacity: 0.5; cursor: not-allowed; }
+
+.order-actions {
+  display: flex;
+  gap: 6px;
+  align-items: center;
+}
+
 /* ── Inline edit ─────────────────────────────────────────────────────────── */
 .inline-edit { display: flex; flex-direction: column; gap: 8px; margin-top: 8px; }
 
