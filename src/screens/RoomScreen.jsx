@@ -67,6 +67,22 @@ export default function RoomScreen({ code, myName, onLeave }) {
   const orders = room.orders || {};
   const myItems = orders[myName]?.items || "";
   const otherMembers = members.filter((m) => m.name !== myName);
+  
+  // Sort other members: those with orders first, then those without orders
+  const sortedOtherMembers = otherMembers.sort((a, b) => {
+    const aItems = orders[a.name]?.items || "";
+    const bItems = orders[b.name]?.items || "";
+    const aHasOrder = aItems.trim().length > 0;
+    const bHasOrder = bItems.trim().length > 0;
+    
+    // If both have orders or both don't have orders, maintain original order
+    if (aHasOrder === bHasOrder) {
+      return 0;
+    }
+    
+    // Members with orders come first (negative value)
+    return aHasOrder ? -1 : 1;
+  });
 
   // ── Action handlers (add toast feedback here, not in the hook) ────────────
   const handleSaveOrder = async (items) => {
@@ -161,10 +177,10 @@ export default function RoomScreen({ code, myName, onLeave }) {
           myName={myName}
         />
 
-        {otherMembers.length > 0 && (
+        {sortedOtherMembers.length > 0 && (
           <>
             <div className="section-label">Everyone Else</div>
-            {otherMembers.map((m) => (
+            {sortedOtherMembers.map((m) => (
               <OrderCard
                 key={m.name}
                 person={m.name}
